@@ -8,26 +8,25 @@ import java.util.Set;
 
 
 @Data //посмотреть что с сеттарами
-@Table(name = "ORDER")
-@Entity
-public class Order implements Serializable{
+@Entity(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "paid")
     private Boolean paid;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @ManyToMany(mappedBy = "ordered")
+    @ManyToMany
+    @JoinTable(
+            name = "ordered_food_food",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_id"))
     Set<Food> orderedFood;
 
     public Order setPaid (Boolean paid) {

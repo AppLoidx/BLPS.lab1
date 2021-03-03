@@ -4,12 +4,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Data
-@Table(name = "USER")
-@Entity
-public class User implements Serializable {
+
+@Entity(name = "users")
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +19,9 @@ public class User implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     public User setName (String name) {
         this.name = name;

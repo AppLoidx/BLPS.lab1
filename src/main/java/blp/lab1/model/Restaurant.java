@@ -4,13 +4,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 
 @Data
-@Table(name = "RESTAURANT")
 @Entity
-public class Restaurant implements Serializable{
+public class Restaurant{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -19,8 +19,15 @@ public class Restaurant implements Serializable{
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "having")
-    Set<Food> havingFood;
+    @ManyToMany
+    @JoinTable(
+            name = "having_food_food",
+            joinColumns = @JoinColumn(name = "food_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurant_id"))
+    private Set<Food> havingFood;
+
+    @OneToMany(mappedBy = "restaurant")
+    private List<Order> orders;
 
     public Restaurant setName(String name) {
         this.name = name;
